@@ -1,7 +1,10 @@
 .vscode
 .ipynb_checkpoints
+<<<<<<< HEAD
 .idea
 
 .DS_Store
 
+=======
+>>>>>>> 6696cb7474612a3d4b28ee5200ad9569fa06a87c
 __pycache__
