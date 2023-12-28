@@ -10,7 +10,7 @@ def producer_demo():
         key_serializer=lambda k: json.dumps(k).encode(),
         value_serializer=lambda v: json.dumps(v).encode())
     # 发送三条消息
-    for i in range(0, 3):
+    for i in range(0, 1000):
         future = producer.send(
             topic='kafka_demo',
             key='count_num',  # 同一个key值，会被送至同一个分区
@@ -23,6 +23,8 @@ def producer_demo():
             print(traceback.format_exc())
             continue
         print(result)
+    producer.flush()
+    #producer.close()
 
 
 if __name__ == "__main__":
