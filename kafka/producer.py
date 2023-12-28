@@ -17,11 +17,12 @@ def producer_demo():
             value=str(i))
         print("send {}".format(str(i)))
         try:
-            future.get(timeout=10) # 监控是否发送成功
-        #except kafka_errors:  # 发送失败抛出kafka_errors
-        #    traceback.format_exc()
+            result = future.get(timeout=10) # 监控是否发送成功
         except Exception as e:
-            traceback.format_exc()
+            print(e)
+            print(traceback.format_exc())
+            continue
+        print(result)
 
 
 if __name__ == "__main__":
