@@ -6,9 +6,9 @@ import json
 def consumer_demo():
     consumer = KafkaConsumer(
         'kafka_demo',
-        bootstrap_servers=['localhost:9092'],
+        bootstrap_servers=['192.168.1.11:9092'],
         group_id='test',
-        consumer_timeout_ms=1000
+        #consumer_timeout_ms=5000
     )
     for message in consumer:
         print("receive, key: {}, value: {}".format(
