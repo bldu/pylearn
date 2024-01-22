@@ -9,9 +9,10 @@ def test():
     print(request.method)
     if request.method == "POST":
         request_data = request.get_data()
-        request_json_data = json.loads(request_data)
-        print(request_json_data)
-        return json.dumps(request_json_data)
+        print(request_data)
+        request_data_dict = json.loads(request_data)
+        print(request_data_dict)
+        return json.dumps(request_data_dict)
 
 
 if __name__ == "__main__":
