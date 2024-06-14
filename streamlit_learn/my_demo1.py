@@ -1,11 +1,16 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import requests
+import subprocess
+import json
 
 # define some constant string
 basic_concepts = 'Basic Concepts'
 advanced_concepts = 'Advanced Concepts'
-tabs = "tabs"
+tabs = "tabs :new:"
+llm = "LLM"
+counter = "counter"
 
 def page_basic_concepts():
     st.title(basic_concepts)
@@ -15,6 +20,9 @@ def page_basic_concepts():
         st.write('*Why hello there*')
     else:
         st.write('**Goodbye**')
+
+    st.divider()
+    st.write("---")
 
     st.write("### Here's our first attempt at using data to create a table:")
     st.write(pd.DataFrame({
@@ -80,14 +88,29 @@ def page_tabs():
         st.header("An owl")
         st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
 
+def page_llm():
+    prompt = st.text_input("#### ask questions")
+    if prompt is not None:
+        req_dict = {
+                    "model": "llamafamily/llama3-chinese-8b-instruct",
+                    "prompt": prompt,
+                    "stream": False
+                    }
+        response = requests.post("http://localhost:11434/api/generate", data=json.dumps(req_dict))
+        st.write(json.loads(response.text)["response"])
+
+def page_counter():
+    st.title(counter)
+    if "counter" not in st.session_state:
+        st.session_state.counter = 0
+    st.session_state["counter"] += 1
+    st.write(f"## This page has run {st.session_state.counter} times.")
+
+
 def main():
-    # 设置初始页面为Home
-    session_state = st.session_state
-    if 'page' not in session_state:
-        session_state['page'] = 'Home'
 
     # 导航栏
-    page = st.sidebar.radio('Navigate', [basic_concepts, advanced_concepts, tabs], index=None)
+    page = st.sidebar.radio('Navigate', [basic_concepts, advanced_concepts, tabs, llm, counter])
 
     if page == basic_concepts:
         page_basic_concepts()
@@ -95,6 +118,10 @@ def main():
         page_advanced_concepts()
     elif page == tabs:
         page_tabs()
+    elif page == llm:
+        page_llm()
+    elif page == counter:
+        page_counter()
 
 if __name__ == '__main__':
     main()
