@@ -89,15 +89,40 @@ def page_tabs():
         st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
 
 def page_llm():
-    prompt = st.text_input("#### ask questions")
-    if prompt is not None:
-        req_dict = {
-                    "model": "llamafamily/llama3-chinese-8b-instruct",
-                    "prompt": prompt,
-                    "stream": False
-                    }
-        response = requests.post("http://localhost:11434/api/generate", data=json.dumps(req_dict))
-        st.write(json.loads(response.text)["response"])
+    llama, codellma, llama_chn = st.tabs(["llama", "codellama", "llama_chn"])
+
+    with llama:
+        prompt = st.text_input("#### ask questions", value="Who are you?")
+        if st.button("submit", key="llama"):
+            req_dict = {
+                        "model": "llama3",
+                        "prompt": prompt,
+                        "stream": False
+                        }
+            response = requests.post("http://localhost:11434/api/generate", data=json.dumps(req_dict))
+            st.write(json.loads(response.text)["response"])
+
+    with codellma:
+        prompt = st.text_input("#### ask questions", value="Implement quick sort with python")
+        if st.button("submit", key="codellama"):
+            req_dict = {
+                        "model": "codellama",
+                        "prompt": prompt,
+                        "stream": False
+                        }
+            response = requests.post("http://localhost:11434/api/generate", data=json.dumps(req_dict))
+            st.write(json.loads(response.text)["response"])
+
+    with llama_chn:
+        prompt = st.text_input("#### ask questions", value="你是谁")
+        if st.button("submit", key="llama_chn"):
+            req_dict = {
+                        "model": "llamafamily/llama3-chinese-8b-instruct",
+                        "prompt": prompt,
+                        "stream": False
+                        }
+            response = requests.post("http://localhost:11434/api/generate", data=json.dumps(req_dict))
+            st.write(json.loads(response.text)["response"])
 
 def page_counter():
     st.title(counter)
