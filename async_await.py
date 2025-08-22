@@ -30,7 +30,8 @@ async def task(name, delay):
     print(f"Task {name} end")
     return name
 
-async def concurrent():
+async def concurrent1():
+    print("concurrent1")
     # 方式1：gather并发执行
     results = await asyncio.gather(
         task("A", 2),
@@ -38,15 +39,20 @@ async def concurrent():
     )
     print("Results:", results)
 
+
+async def concurrent2():
+    print("concurrent2")
     # 方式2：create_task 手动调度
     t1 = asyncio.create_task(task("C", 1))
     t2 = asyncio.create_task(task("D", 2))
-    await t1
-    await t2
+    r1 = await t1
+    r2 = await t2
+    print(f"Result: {[r1, r2]}")
 
 
 def test2():
-    asyncio.run(concurrent())
+    asyncio.run(concurrent1())
+    asyncio.run(concurrent2())
 
 
 def main():
